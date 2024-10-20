@@ -4,13 +4,33 @@ import sqlLogo from "./assets/sql_logo.png";
 
 function App() {
   const [queryDescription, setQueryDescription] = useState("");
-  const submitFun = (event) => {
+  const [sqlQuery, setSqlQuery] = useState("");
+
+  const submitFun = async (event) => {
     event.preventDefault();
-    console.log("Form has been submited: ", queryDescription);
+    const generatedQuery = await generateQuery();
+    setSqlQuery(generatedQuery);
   };
-  // useEffect(() => {
-  //   console.log(queryDescription);
-  // }, [queryDescription]);
+
+  const generateQuery = async () => {
+    const response = await fetch("http://localhost:3005/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ queryDescription: queryDescription }),
+    });
+    const data = await response.json();
+    return prettifyReturn(data.response);
+  };
+
+  const prettifyReturn = (initialString) => {
+    let modification1 = initialString.substring(6);
+    let endOfSubstring = modification1.indexOf("`");
+    let modification2 = modification1.substring(0, endOfSubstring);
+    return modification2;
+  };
+
   return (
     <main className={style.main}>
       <img src={sqlLogo} className={style.icon} />
@@ -25,6 +45,7 @@ function App() {
         />
         <input type="submit" value="Generate query" />
       </form>
+      <pre>{sqlQuery}</pre>
     </main>
   );
 }

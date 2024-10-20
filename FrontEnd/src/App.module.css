@@ -78,7 +78,6 @@
   border: solid 1px #0b4650;
 }
 
-.main .result {
+.main pre {
   margin-top: 40px;
-  width: 69ch;
 }

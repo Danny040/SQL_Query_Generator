@@ -1,4 +1,4 @@
-// configuring openAIClient here
+// configuring GOOGLE AI Client here
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 
